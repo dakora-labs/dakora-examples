@@ -116,7 +116,7 @@ Wait 10-30 seconds after the script completes. Check that your API key is valid 
 
 ## 🤝 Contributing
 
-We welcome contributions! See [`CONTRIBUTING.md`](CONTRIBUTING.md) for guidelines.
+We welcome contributions! See [CONTRIBUTING](CONTRIBUTING.md) for guidelines.
 
 ### Quick Contribution Guide
 
@@ -132,7 +132,7 @@ We welcome contributions! See [`CONTRIBUTING.md`](CONTRIBUTING.md) for guideline
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [`LICENSE`](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
