@@ -28,8 +28,8 @@ Standalone examples showing how to:
 ### Prerequisites
 
 - Python 3.11+
-- Dakora API key from [playground.dakora.io](https://playground.dakora.io/) (Settings → API Keys)
-- OpenAI API key (only for `01_template_with_tracing.py`) from [platform.openai.com](https://platform.openai.com/api-keys)
+- Dakora API key from [Dakora Studio](https://playground.dakora.io/) (Settings → API Keys)
+- OpenAI API key (only for `01_template_with_tracing.py`) from [OpenAI Platform](https://platform.openai.com/api-keys)
 
 ### Installation
 
@@ -57,7 +57,7 @@ python quickstart/00_template_render.py
 python quickstart/01_template_with_tracing.py
 ```
 
-View execution logs and analytics at [playground.dakora.io/executions](https://playground.dakora.io/executions).
+View execution logs and analytics in [Dakora Studio](https://playground.dakora.io/project/default/executions).
 
 ---
 
@@ -110,7 +110,7 @@ Copy `.env.example` to `.env` and add your `DAKORA_API_KEY`. Add `OPENAI_API_KEY
 Run `pip install -e ".[quickstart]"` to install dependencies.
 
 **Traces not showing in Studio?**  
-Wait 10-30 seconds after the script completes. Check that your API key is valid at [playground.dakora.io/settings](https://playground.dakora.io/settings).
+Wait 10-30 seconds after the script completes. Check that your API key is valid in [Studio Settings](https://playground.dakora.io/settings).
 
 ---
 
@@ -138,9 +138,9 @@ This project is licensed under the MIT License - see the [`LICENSE`](LICENSE) fi
 
 ## 🔗 Links
 
-- **Dakora Studio:** [playground.dakora.io](https://playground.dakora.io)
-- **Documentation:** [docs.dakora.io](https://docs.dakora.io)
-- **Issues:** [github.com/dakora-labs/dakora-examples/issues](https://github.com/dakora-labs/dakora-examples/issues)
+- **Dakora Studio:** [Visit Studio](https://playground.dakora.io)
+- **Documentation:** [Read the docs](https://docs.dakora.io)
+- **Issues:** [Report an issue](https://github.com/dakora-labs/dakora-examples/issues)
 
 ---
 
@@ -148,6 +148,6 @@ This project is licensed under the MIT License - see the [`LICENSE`](LICENSE) fi
 
 ### Built with ❤️ by the Dakora team
 
-[⭐ Star us on GitHub](https://github.com/dakora-labs/dakora-examples) • [📖 Read the docs](https://docs.dakora.io) • [💬 Join the community](https://discord.gg/QSRRcFjzE8)
+[⭐ Star us on GitHub](https://github.com/dakora-labs/dakora-examples) • [📖 Read the docs](https://docs.dakora.io) • [💬 Join our Discord](https://discord.gg/QSRRcFjzE8)
 
 </div>
