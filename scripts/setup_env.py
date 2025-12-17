@@ -9,7 +9,6 @@ EXAMPLE_FILE = ROOT / ".env.example"
 
 DEFAULTS = {
     "DAKORA_API_KEY": "dk_proj_your_project_key",
-    "DAKORA_BASE_URL": "https://api.dakora.io",
     "DAKORA_TEMPLATE_ID": "faq_responder",
     "OPENAI_API_KEY": "sk-your-openai-key",
     "OPENAI_MODEL": "gpt-4o-mini",

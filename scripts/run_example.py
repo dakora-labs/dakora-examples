@@ -77,7 +77,11 @@ def main() -> int:
 
     example = EXAMPLES[args.example]
     load_environment()
-    require_env(example["env"])
+    try:
+        require_env(example["env"])
+    except RuntimeError as exc:
+        print(f"Environment check failed: {exc}")
+        return 1
 
     runner = args.runner
     if runner == "auto":

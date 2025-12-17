@@ -1,44 +1,50 @@
 # Dakora Examples
 
-See a Dakora trace in a few minutes. Start with the quickstart track, then branch into providers/agents/production as they fill in.
+Run a Dakora template and see a trace in minutes. All commands assume the repo root (`dakora-examples`).
 
-## Zero to trace (3 commands)
+## Prereqs (once)
 
-1. `python scripts/setup_env.py` (creates `.env` and prompts for your keys)
-2. `uv run python scripts/doctor.py` (or `python scripts/doctor.py` if you do not use uv)
+- Python 3.11+ with internet for dependency installs.
+- Dakora API key from Settings > API Keys (`DAKORA_API_KEY`).
+- Optional: `OPENAI_API_KEY` for tracing/OpenAI, `OPENAI_MODEL` (default `gpt-4o-mini`).
+- uv installed is recommended; pip works with `--runner pip`.
+- Create `.env` quickly: `python scripts/setup_env.py` (copies `.env.example` and prompts for values).
+
+## Quickstart (uv)
+
+1. `python scripts/setup_env.py`
+2. `uv run python scripts/doctor.py`
 3. `uv run python scripts/run_example.py template-tracing`
 
-No `uv`? Use `python -m pip install ".[quickstart]"` then `python scripts/run_example.py template-tracing`.
+Pip fallback: `python -m pip install ".[quickstart]"` then `python scripts/run_example.py template-tracing --runner pip`.
 
 ## Pick an example
 
-- `template-tracing` — renders the default template, calls OpenAI, and exports OTLP traces to Dakora (best first run).
-- `template-render` — renders the template without tracing or OpenAI (works offline, good for key checks).
+- `template-tracing` – renders the template, calls OpenAI, and exports OTLP spans to Dakora (best first run). Path: `quickstart/01_template_with_tracing.py`. Command: `uv run python scripts/run_example.py template-tracing`. Needs `DAKORA_API_KEY` + `OPENAI_API_KEY`.
+- `template-render` – renders the template without tracing or OpenAI. Path: `quickstart/00_template_render.py`. Command: `uv run python scripts/run_example.py template-render`. Needs `DAKORA_API_KEY` only.
 
-Both commands accept `--runner uv|pip` if you want to force a runner. Defaults auto-detect `uv`.
+Both commands accept `--runner uv|pip`; `--runner auto` (default) uses uv when available.
 
-## Prereqs
+## File map
 
-- Python 3.11+ and internet access for dependency install.
-- A Dakora API key from **Settings > API Keys** in your project (`DAKORA_API_KEY`).
-- Optional: `DAKORA_BASE_URL` if you self-host; `OPENAI_API_KEY` for tracing/OpenAI example.
+- `scripts/setup_env.py` – prompts and writes `.env` from `.env.example`.
+- `scripts/doctor.py` – checks Python version, command availability, env vars, and imports.
+- `scripts/run_example.py` – auto-selects uv/pip, installs extras if needed, and runs an example.
+- `shared/templates.py` – built-in template IDs and sample inputs.
+- `shared/utils.py` – `.env` loader, env validation, banners, and trace flushing.
+- `quickstart/00_template_render.py` – render-only quickstart.
+- `quickstart/01_template_with_tracing.py` – tracing + OpenAI quickstart.
+- `pyproject.toml` – dependency extras (`quickstart`, `openai`, `otel`, etc.).
+- `.env.example` – starter env file (copy or generate via setup_env).
 
 ## Template defaults
 
-- Default template ID: `faq_responder` (ships with every project). Override via `DAKORA_TEMPLATE_ID`.
+- Default template ID: `faq_responder` (override with `DAKORA_TEMPLATE_ID`).
 - Other built-ins: `research_synthesizer`, `technical_documentation`, `social_media_campaign`.
-- Sample inputs live in `shared/templates.py`. Update there if you target your own template.
+- Sample inputs live in `shared/templates.py`; update to match your template.
 
-## Handy scripts
+## Troubleshooting
 
-- `scripts/setup_env.py` — generates `.env` from `.env.example` with prompts.
-- `scripts/doctor.py` — checks Python version, required env vars, and imports.
-- `scripts/run_example.py` — runs examples with uv (preferred) or pip fallback; ensures env is loaded.
-
-## Layout
-
-- `quickstart/` — ready-to-run quickstart files.
-- `providers/`, `maf_agents/`, `workflows/`, `production/` — upcoming tracks (placeholders for now).
-- `shared/` — helpers reused across examples.
-- `pyproject.toml` — extras for quickstart/otel/providers.
-- `.env.example` — minimal keys; copy to `.env` before running anything.
+- Run `python scripts/doctor.py` to verify env and imports.
+- Missing env vars? Edit `.env` or rerun `python scripts/setup_env.py`.
+- Traces appear in Dakora Studio > Executions after `template-tracing` finishes.
