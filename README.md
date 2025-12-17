@@ -1,50 +1,153 @@
-# Dakora Examples
+<div align="center">
 
-Run a Dakora template and see a trace in minutes. All commands assume the repo root (`dakora-examples`).
+# 🚀 Dakora Examples
 
-## Prereqs (once)
+Learn how to use Dakora prompt templates and OpenTelemetry tracing with practical examples.
 
-- Python 3.11+ with internet for dependency installs.
-- Dakora API key from Settings > API Keys (`DAKORA_API_KEY`).
-- Optional: `OPENAI_API_KEY` for tracing/OpenAI, `OPENAI_MODEL` (default `gpt-4o-mini`).
-- uv installed is recommended; pip works with `--runner pip`.
-- Create `.env` quickly: `python scripts/setup_env.py` (copies `.env.example` and prompts for values).
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Quickstart (uv)
+[Getting Started](#-quick-start) • [Examples](#-examples) • [Docs](#-documentation)
 
-1. `python scripts/setup_env.py`
-2. `uv run python scripts/doctor.py`
-3. `uv run python scripts/run_example.py template-tracing`
+</div>
 
-Pip fallback: `python -m pip install ".[quickstart]"` then `python scripts/run_example.py template-tracing --runner pip`.
+---
 
-## Pick an example
+## ✨ What's Inside
 
-- `template-tracing` – renders the template, calls OpenAI, and exports OTLP spans to Dakora (best first run). Path: `quickstart/01_template_with_tracing.py`. Command: `uv run python scripts/run_example.py template-tracing`. Needs `DAKORA_API_KEY` + `OPENAI_API_KEY`.
-- `template-render` – renders the template without tracing or OpenAI. Path: `quickstart/00_template_render.py`. Command: `uv run python scripts/run_example.py template-render`. Needs `DAKORA_API_KEY` only.
+Standalone examples showing how to:
 
-Both commands accept `--runner uv|pip`; `--runner auto` (default) uses uv when available.
+- Render prompt templates with the Dakora SDK
+- Track LLM calls with OpenTelemetry instrumentation
+- View execution analytics in Dakora Studio
 
-## File map
+---
 
-- `scripts/setup_env.py` – prompts and writes `.env` from `.env.example`.
-- `scripts/doctor.py` – checks Python version, command availability, env vars, and imports.
-- `scripts/run_example.py` – auto-selects uv/pip, installs extras if needed, and runs an example.
-- `shared/templates.py` – built-in template IDs and sample inputs.
-- `shared/utils.py` – `.env` loader, env validation, banners, and trace flushing.
-- `quickstart/00_template_render.py` – render-only quickstart.
-- `quickstart/01_template_with_tracing.py` – tracing + OpenAI quickstart.
-- `pyproject.toml` – dependency extras (`quickstart`, `openai`, `otel`, etc.).
-- `.env.example` – starter env file (copy or generate via setup_env).
+## 🎯 Quick Start
 
-## Template defaults
+### Prerequisites
 
-- Default template ID: `faq_responder` (override with `DAKORA_TEMPLATE_ID`).
-- Other built-ins: `research_synthesizer`, `technical_documentation`, `social_media_campaign`.
-- Sample inputs live in `shared/templates.py`; update to match your template.
+- Python 3.11+
+- Dakora API key from [playground.dakora.io](https://playground.dakora.io/) (Settings → API Keys)
+- OpenAI API key (only for `01_template_with_tracing.py`) from [platform.openai.com](https://platform.openai.com/api-keys)
 
-## Troubleshooting
+### Installation
 
-- Run `python scripts/doctor.py` to verify env and imports.
-- Missing env vars? Edit `.env` or rerun `python scripts/setup_env.py`.
-- Traces appear in Dakora Studio > Executions after `template-tracing` finishes.
+```bash
+pip install -e ".[quickstart]"
+```
+
+### Setup
+
+Create a `.env` file with your API key:
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` and set `DAKORA_API_KEY` (add `OPENAI_API_KEY` if running the tracing example).
+
+### Run Examples
+
+```bash
+# Simple template rendering
+python quickstart/00_template_render.py
+
+# Template + OpenAI with tracing
+python quickstart/01_template_with_tracing.py
+```
+
+View execution logs and analytics at [playground.dakora.io/executions](https://playground.dakora.io/executions).
+
+---
+
+## 📚 Examples
+
+### [00_template_render.py](quickstart/00_template_render.py)
+
+Basic template rendering without tracing. Use this when you just need to render prompts.
+
+**Requires:** `DAKORA_API_KEY`
+
+### [01_template_with_tracing.py](quickstart/01_template_with_tracing.py)
+
+Renders a template, calls OpenAI, and sends traces to Dakora Studio. View token usage, costs, and latency in the dashboard.
+
+**Requires:** `DAKORA_API_KEY` + `OPENAI_API_KEY`
+
+---
+
+## 🛠️ Configuration
+
+### Environment Variables
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `DAKORA_API_KEY` | Yes | Your Dakora API key |
+| `OPENAI_API_KEY` | Only for `01_*` | Your OpenAI API key |
+| `DAKORA_TEMPLATE_ID` | No | Template ID (default: `faq_responder`) |
+| `OPENAI_MODEL` | No | Model name (default: `gpt-4o-mini`) |
+
+Examples use the `faq_responder` starter template by default. Edit template IDs and inputs directly in the example files to use your own templates.
+
+---
+
+## 📖 Documentation
+
+- [Dakora Overview](https://docs.dakora.io/getting-started/overview) — Learn what Dakora does
+- [Quick Start Guide](https://docs.dakora.io/getting-started/quickstart) — 5-minute setup tutorial
+- [Templates](https://docs.dakora.io/concepts/templates) — Create and manage prompts
+- [Studio](https://playground.dakora.io/) — Test templates and view analytics
+
+---
+
+## 🐛 Troubleshooting
+
+**Missing API keys?**  
+Copy `.env.example` to `.env` and add your `DAKORA_API_KEY`. Add `OPENAI_API_KEY` only if running `01_template_with_tracing.py`.
+
+**Import errors?**  
+Run `pip install -e ".[quickstart]"` to install dependencies.
+
+**Traces not showing in Studio?**  
+Wait 10-30 seconds after the script completes. Check that your API key is valid at [playground.dakora.io/settings](https://playground.dakora.io/settings).
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! See [`CONTRIBUTING.md`](CONTRIBUTING.md) for guidelines.
+
+### Quick Contribution Guide
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Test your changes by running the examples
+5. Commit your changes (`git commit -m 'Add amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [`LICENSE`](LICENSE) file for details.
+
+---
+
+## 🔗 Links
+
+- **Dakora Studio:** [playground.dakora.io](https://playground.dakora.io)
+- **Documentation:** [docs.dakora.io](https://docs.dakora.io)
+- **Issues:** [github.com/dakora-labs/dakora-examples/issues](https://github.com/dakora-labs/dakora-examples/issues)
+
+---
+
+<div align="center">
+
+### Built with ❤️ by the Dakora team
+
+[⭐ Star us on GitHub](https://github.com/dakora-labs/dakora-examples) • [📖 Read the docs](https://docs.dakora.io) • [💬 Join the community](https://discord.gg/QSRRcFjzE8)
+
+</div>
