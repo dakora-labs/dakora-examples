@@ -39,20 +39,19 @@ View results:
 
 from __future__ import annotations
 
+
 import asyncio
 import os
 from pathlib import Path
 from textwrap import dedent
-
-from opentelemetry.instrumentation.openai import OpenAIInstrumentor
-
-# Instrument OpenAI before importing or instantiating any clients
-OpenAIInstrumentor().instrument()
-
 from dakora import Dakora
 from dakora_instrumentation.generic import setup_instrumentation
 from dotenv import load_dotenv
 from openai import OpenAI
+from opentelemetry.instrumentation.openai import OpenAIInstrumentor  # type: ignore[import-untyped]
+
+# Instrument OpenAI before importing or instantiating any clients
+OpenAIInstrumentor().instrument()
 
 # Load environment variables from .env file
 ENV_FILE = Path(__file__).resolve().parent.parent / ".env"
@@ -65,7 +64,7 @@ else:
 TEMPLATE_ID = os.getenv("DAKORA_TEMPLATE_ID", "faq_responder")
 
 # Sample inputs for the FAQ responder template
-TEMPLATE_INPUTS = {
+TEMPLATE_INPUTS: dict[str, object] = {
     "question": "How do I reset my password?",
     "knowledge_base": dedent(
         """
@@ -80,12 +79,12 @@ TEMPLATE_INPUTS = {
 
 async def main() -> None:
     # Check for required environment variables
-    missing = []
+    missing: list[str] = []
     if not os.getenv("DAKORA_API_KEY"):
         missing.append("DAKORA_API_KEY")
     if not os.getenv("OPENAI_API_KEY"):
         missing.append("OPENAI_API_KEY")
-    
+
     if missing:
         raise RuntimeError(
             f"Missing environment variables: {', '.join(missing)}. "
@@ -95,7 +94,6 @@ async def main() -> None:
     # Initialize Dakora client
     dakora = Dakora(
         api_key=os.getenv("DAKORA_API_KEY"),
-        base_url=os.getenv("DAKORA_BASE_URL"),  # Optional: override API endpoint
     )
 
     # Set up OpenTelemetry instrumentation
@@ -108,20 +106,20 @@ async def main() -> None:
     print("=" * 60)
     print("Dakora Quickstart: Template Render + Tracing")
     print("=" * 60)
-    print(f"\n> Using template `{TEMPLATE_ID}` (override with DAKORA_TEMPLATE_ID)")
+    print(f"\n> Using template `{TEMPLATE_ID}`")
     print(f"> Rendering template `{TEMPLATE_ID}`...")
-    
+
     # Render the template with sample inputs
     # This call is automatically traced by Dakora instrumentation
     rendered = await dakora.prompts.render(TEMPLATE_ID, TEMPLATE_INPUTS)
     print(f"> Rendered template v{rendered.version}")
 
-    print("\n> Calling OpenAI with rendered template (traced)...")
-    
+    print("\n> Calling OpenAI with rendered template...")
+
     # Initialize OpenAI client (already instrumented by OpenAIInstrumentor at module level)
     client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
     model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
-    
+
     # Call OpenAI - this is automatically traced!
     # The trace will include: model, tokens, latency, cost
     response = client.chat.completions.create(
@@ -133,18 +131,19 @@ async def main() -> None:
 
     # Ensure all traces are sent to Dakora before exiting
     print("\n> Flushing traces to Dakora...")
-    
+
     # Flush OpenTelemetry spans
     try:
         from opentelemetry import trace
+
         provider = trace.get_tracer_provider()
         if hasattr(provider, "force_flush"):
-            provider.force_flush(timeout_millis=5000)
+            provider.force_flush(timeout_millis=5000)  # type: ignore
     except ImportError:
         pass
-    
+
     await dakora.close()
-    print("> Done. Check Dakora Studio > Executions to see this trace.")
+    print("> Done! Check Dakora Studio > Executions to see this trace.")
 
 
 if __name__ == "__main__":

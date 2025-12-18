@@ -136,14 +136,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 🔗 Links
-
-- **Dakora Studio:** [Visit Studio](https://playground.dakora.io)
-- **Documentation:** [Read the docs](https://docs.dakora.io)
-- **Issues:** [Report an issue](https://github.com/dakora-labs/dakora-examples/issues)
-
----
-
 <div align="center">
 
 ### Built with ❤️ by the Dakora team

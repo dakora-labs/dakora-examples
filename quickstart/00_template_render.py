@@ -43,7 +43,7 @@ else:
 TEMPLATE_ID = os.getenv("DAKORA_TEMPLATE_ID", "faq_responder")
 
 # Sample inputs for the FAQ responder template
-TEMPLATE_INPUTS = {
+TEMPLATE_INPUTS: dict[str, object] = {
     "question": "How do I reset my password?",
     "knowledge_base": dedent(
         """
@@ -67,14 +67,13 @@ async def main() -> None:
     # Initialize Dakora client
     dakora = Dakora(
         api_key=os.getenv("DAKORA_API_KEY"),
-        base_url=os.getenv("DAKORA_BASE_URL"),  # Optional: override API endpoint
     )
 
     print("=" * 60)
-    print("Dakora Quickstart: Template Render (no OTLP)")
+    print("Dakora Quickstart: Template Render")
     print("=" * 60)
-    print(f"\n> Using template `{TEMPLATE_ID}` (override with DAKORA_TEMPLATE_ID)")
-    print(f"> Rendering template `{TEMPLATE_ID}` without tracing...")
+    print(f"\n> Using template `{TEMPLATE_ID}`")
+    print(f"> Rendering template `{TEMPLATE_ID}`")
 
     # Render the template with sample inputs
     rendered = await dakora.prompts.render(TEMPLATE_ID, TEMPLATE_INPUTS)
